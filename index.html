@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Turbo Descriptions</title>
+  <link rel="stylesheet" href="./style.css?v=TDESC_1" />
+</head>
+
+<body>
+  <div class="crest-watermark" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brandMark" aria-hidden="true">TD</div>
+        <div class="brandText">
+          <h1>Turbo Descriptions</h1>
+          <p class="sub">Junior Cycle Spanish — describe people, places & routines</p>
+        </div>
+      </div>
+
+      <div class="pills">
+        <span class="pill" id="pillLevel">Level: —</span>
+        <span class="pill" id="pillMode">Mode: —</span>
+        <span class="pill" id="pillPenalty">Penalty: —</span>
+      </div>
+    </header>
+
+    <!-- HOME -->
+    <section class="card" id="screenHome">
+      <div class="cardHead">
+        <h2>Choose your round</h2>
+        <p class="muted">
+          Answer 10 prompts in Spanish. Then mark wrong answers at insane speed.
+          Solo needs <b>no code</b>. For class competitions, use a <b>Match Code</b>.
+        </p>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="levelSelect">Level (1 easy → 10 tough)</label>
+          <select id="levelSelect"></select>
+          <p class="hint" id="levelHint">—</p>
+        </div>
+
+        <div class="field">
+          <label for="modeSelect">Mode</label>
+          <select id="modeSelect">
+            <option value="classic">Classic</option>
+            <option value="sprint">Sprint (time cap)</option>
+            <option value="survival">Survival (0 wrong)</option>
+            <option value="relay">Relay (A then B)</option>
+          </select>
+          <p class="hint" id="modeHintHome">—</p>
+        </div>
+
+        <div class="field span2">
+          <label>Match Code (optional)</label>
+          <div class="btnRow">
+            <input id="matchInput" maxlength="7" placeholder="Enter 7-char match code" />
+            <button class="btn primary" id="joinBtn" type="button">Join</button>
+            <button class="btn primary" id="newMatchBtn" type="button">Generate</button>
+            <button class="btn ghost" id="soloBtn" type="button">Solo</button>
+          </div>
+          <div class="miniRow">
+            <span class="mini" id="matchPreview">Match: —</span>
+            <button class="btn ghost tiny" id="copyMatchBtn" type="button">Copy match</button>
+          </div>
+        </div>
+
+        <div class="field span2">
+          <label>Motivation</label>
+          <div class="motivation">
+            <div class="motBox">
+              <div class="motK">Personal best (this setup)</div>
+              <div class="motV" id="pbOut">—</div>
+            </div>
+            <div class="motBox">
+              <div class="motK">Rounds completed (device)</div>
+              <div class="motV" id="roundsOut">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <details class="rules">
+        <summary><b>Rules (tap)</b></summary>
+        <ol>
+          <li>Write your answers in Spanish (short notes are fine).</li>
+          <li>Click <b>Submit</b> at the end.</li>
+          <li>Mark wrong answers by tapping 1–10 (fast!).</li>
+          <li><b>Score</b> = time + (wrong × penalty). Higher levels = bigger penalty.</li>
+        </ol>
+      </details>
+
+      <p class="copyright">
+        © Turbo Descriptions — classroom practice tool.
+      </p>
+    </section>
+
+    <!-- GAME -->
+    <section class="card hidden" id="screenGame">
+      <div class="gameHead">
+        <div>
+          <h2 id="gameTitle">Round</h2>
+          <div class="meta">
+            <span class="tag" id="tagMatch">Match: —</span>
+            <span class="tag" id="tagCap">Sprint cap: —</span>
+            <span class="tag" id="tagTips">Tips: —</span>
+          </div>
+        </div>
+
+        <div class="gameRight">
+          <div class="timer" id="timer">00:00.0</div>
+          <div class="btnRow">
+            <button class="btn ghost" id="quitBtn" type="button">Quit</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="promptArea"></div>
+
+      <div class="nav">
+        <button class="btn ghost" id="prevBtn" type="button">Back</button>
+        <button class="btn primary" id="nextBtn" type="button">Next</button>
+        <button class="btn primary hidden" id="submitBtn" type="button">Submit</button>
+      </div>
+
+      <p class="hint center" id="modeHint"></p>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="card hidden" id="screenResults">
+      <div class="cardHead">
+        <h2>Results</h2>
+        <p class="muted">Blanks count as wrong automatically. Tap numbers to mark wrong/right.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="k">Time</div>
+          <div class="v" id="timeOut">00:00.0</div>
+        </div>
+        <div class="stat">
+          <div class="k">Wrong</div>
+          <div class="v" id="wrongOut">0</div>
+        </div>
+        <div class="stat">
+          <div class="k">Score</div>
+          <div class="v" id="scoreOut">0.0s</div>
+        </div>
+        <div class="stat">
+          <div class="k">Result code</div>
+          <div class="v code" id="codeOut">------</div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="speedMark">
+        <div class="speedTop">
+          <h3>Insane-speed marking</h3>
+          <p class="muted small">Wrong = red. (Tap again to undo.)</p>
+        </div>
+
+        <div class="markGrid" id="markGrid"></div>
+
+        <div class="btnRow">
+          <button class="btn soft" id="allCorrectBtn" type="button">All correct</button>
+          <button class="btn soft" id="blanksWrongBtn" type="button">Blanks → wrong</button>
+          <button class="btn ghost" id="expandBtn" type="button">Show answers</button>
+        </div>
+      </div>
+
+      <div class="answers hidden" id="answersWrap"></div>
+
+      <div class="hr"></div>
+
+      <div class="btnRow">
+        <button class="btn soft" id="copyBtn" type="button">Copy result</button>
+        <button class="btn primary" id="playAgainBtn" type="button">Play again</button>
+        <button class="btn ghost" id="homeBtn" type="button">Back to menu</button>
+      </div>
+
+      <div class="pbBanner hidden" id="pbBanner">🏆 New Personal Best!</div>
+    </section>
+  </main>
+
+  <script src="./script.js?v=TDESC_1"></script>
+</body>
+</html>
